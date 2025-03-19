@@ -1,12 +1,20 @@
 var shopping_cart = []; // 액션 - 변경 가능
 var shopping_cart_total = 0; // 액션 - 변경 가능
 
-function add_item_to_cart(name, price) {
-  // 액션 - 전역변수를 변경
-  shopping_cart.push({
+function add_item(cart, name, price) {
+  let new_cart = cart.slice();
+
+  new_cart.push({
     name,
     price,
   })
+
+  return new_cart
+}
+
+function add_item_to_cart(name, price) {
+  // 액션 - 전역변수를 변경
+  shopping_cart = add_item(shopping_cart, name, price);
   calc_cart_total();
 }
 
