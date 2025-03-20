@@ -35,14 +35,19 @@ function calc_cart_total() {
   set_tax_dom;
 }
 
+function gets_free_shipping(cart) {
+  return calc_total(cart) >= 20;
+}
+
 function update_shipping_icons() {
   // 액션 - DOM에서 읽음
   var buy_buttons = get_buy_buttons_dom();
   for (let i = 0; i < buy_buttons.length; i++) {
     var button = buy_buttons[i];
     var item = button.item;
+    var new_cart = add_item(shopping_cart, item.name, item.price)
     // 액션 - DOM을 변경
-    if(item.price + shopping_cart_total >= 20) {
+    if(gets_free_shipping(new_cart)) {
       button.show_free_shipping_icon();
     } else {
       button.hide_free_shipping_icon();
@@ -50,7 +55,11 @@ function update_shipping_icons() {
   }
 }
 
+function calc_tax(amount) {
+  return amount * 0.10;
+}
+
 function update_tax_dom() {
   // 액션 - DOM을 변경
-  set_tax_dom(shopping_cart_total * 0.10);
+  set_tax_dom(calc_tax(shopping_cart_total));
 }
