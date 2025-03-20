@@ -3,19 +3,11 @@ var shopping_cart_total = 0; // 액션 - 변경 가능
 
 function add_item(cart, name, price) {
   let new_cart = cart.slice();
-
   new_cart.push({
     name,
     price,
   })
-
   return new_cart
-}
-
-function add_item_to_cart(name, price) {
-  // 액션 - 전역변수를 변경
-  shopping_cart = add_item(shopping_cart, name, price);
-  calc_cart_total();
 }
 
 function calc_total(cart) {
@@ -27,26 +19,35 @@ function calc_total(cart) {
   return total
 }
 
-function calc_cart_total() {
-  shopping_cart_total = calc_total(shopping_cart);
-
-  set_cart_total_dom();
-  update_shipping_icons();
-  set_tax_dom;
-}
-
 function gets_free_shipping(cart) {
   return calc_total(cart) >= 20;
 }
 
-function update_shipping_icons() {
-  // 액션 - DOM에서 읽음
-  var buy_buttons = get_buy_buttons_dom();
-  for (let i = 0; i < buy_buttons.length; i++) {
-    var button = buy_buttons[i];
+function calc_tax(amount) {
+  return amount * 0.10;
+}
+
+function add_item_to_cart(name, price) {
+  // 액션 - 전역변수를 변경
+  shopping_cart = add_item(shopping_cart, name, price);
+
+  var total = calc_total(cart);
+  set_cart_total_dom(total);
+  update_shipping_icons(cart)
+  update_tax_dom(total);
+}
+
+function set_cart_total_dom(total) {
+  total
+}
+
+function update_shipping_icons(cart) {
+  var buttons = get_buy_buttons_dom();
+  for (let i = 0; i < buttons.length; i++) {
+    var button = buttons[i];
     var item = button.item;
-    var new_cart = add_item(shopping_cart, item.name, item.price)
-    // 액션 - DOM을 변경
+    var new_cart = add_item(cart, item.name, item.price)
+
     if(gets_free_shipping(new_cart)) {
       button.show_free_shipping_icon();
     } else {
@@ -55,11 +56,7 @@ function update_shipping_icons() {
   }
 }
 
-function calc_tax(amount) {
-  return amount * 0.10;
-}
-
-function update_tax_dom() {
+function update_tax_dom(total) {
   // 액션 - DOM을 변경
-  set_tax_dom(calc_tax(shopping_cart_total));
+  set_tax_dom(calc_tax(total));
 }
