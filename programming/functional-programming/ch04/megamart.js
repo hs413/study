@@ -9,9 +9,13 @@ function make_cart_item(name, price) {
 }
 
 function add_item(cart, item) {
-  let new_cart = cart.slice();
-  new_cart.push(item);
-  return new_cart;
+  return add_element_last(cart, item);
+}
+
+function add_element_last(array, elem) {
+  let new_array = array.slice();
+  new_array.push(elem);
+  return new_array;
 }
 
 
@@ -35,11 +39,12 @@ function calc_tax(amount) {
 
 function add_item_to_cart(name, price) {
   // 액션 - 전역변수를 변경
-  shopping_cart = add_item(shopping_cart, make_cart_item(name, price));
+  var item = make_cart_item(name, price);
+  shopping_cart = add_item(shopping_cart, item);
 
-  var total = calc_total(cart);
+  var total = calc_total(shopping_cart);
   set_cart_total_dom(total);
-  update_shipping_icons(cart)
+  update_shipping_icons(shopping_cart)
   update_tax_dom(total);
 }
 
@@ -52,7 +57,7 @@ function update_shipping_icons(cart) {
   for (let i = 0; i < buttons.length; i++) {
     var button = buttons[i];
     var item = button.item;
-    var new_cart = add_item(cart, item.name, item.price)
+    var new_cart = add_element_last(cart, item.name, item.price)
 
     if(gets_free_shipping(new_cart)) {
       button.show_free_shipping_icon();
