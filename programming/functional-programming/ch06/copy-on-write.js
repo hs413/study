@@ -63,3 +63,31 @@ function removeItemByNameV2(cart, name) {
 
   return cart;
 }
+
+// 연습
+/*
+let mailingList = [];
+
+function addContact(email) {
+  mailingList.push(email)
+}
+
+function submitFormHandler(event) {
+  let form = event.target;
+  let email = form.elements["email"].value;
+  addContact(email);
+}
+*/
+let mailingList = [];
+
+function addContact(list, email) {
+  const copy = list.slice();
+  copy.push(email);
+  return copy;
+}
+
+function submitFormHandler(event) {
+  let form = event.target;
+  let email = form.elements["email"].value;
+  mailingList = addContact(mailingList, email);
+}
