@@ -91,3 +91,39 @@ function submitFormHandler(event) {
   let email = form.elements["email"].value;
   mailingList = addContact(mailingList, email);
 }
+
+// 객체 카피 온 라이트
+function setPrice(item, newPrice) {
+  // let itemCopy = Object.assign({}, item);
+  // itemCopy.price = newPrice;
+  // return itemCopy
+
+  return objectSet(item, "price", newPrice);
+}
+
+function setQuantity(item, newQuantity) {
+  return objectSet(item, 'quantity', newQuantity);
+}
+
+function objectSet(object, key, value) {
+  let copy = Object.assign({}, object);
+  copy[key] = value;
+  return copy;
+}
+
+function setPriceByName(cart, name, price) {
+  // for (let i = 0; i < cart.length; i++) {
+  //   if (cart[i].name === name) {
+  //     cart[i].price = price;
+  //   }
+  // }
+
+  let cartCopy = cart.slice();
+  for (let i = 0; i < cartCopy.length; i++) {
+    if (cartCopy[i].name === name) {
+      cartCopy[i] = setPrice(cartCopy[i], price)
+    }
+  }
+
+  return cartCopy
+}
