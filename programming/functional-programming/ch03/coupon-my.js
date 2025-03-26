@@ -86,3 +86,46 @@ function sendMail(mailList) {
     console.log(mailList[i])
   }
 }
+
+class Fetch {
+  fetch() {
+    console.log('defaultFetch')
+  }
+}
+
+class Find {
+  find() {
+    console.log(defaultFind)
+  }
+}
+
+class FetchSubscriber extends Fetch {
+  fetch() {
+    return [
+      { email: 'user1@gmail.com', count: 10 },
+      { email: 'user2@gmail.com', count: 4 },
+      { email: 'user3@gmail.com', count: 1 },
+      { email: 'user4@gmail.com', count: 15 },
+    ]
+  }
+}
+
+class FetchCoupons extends Fetch {
+  fetch() {
+    return [
+      { code: '5% 할인쿠폰', rank: 'bad' },
+      { code: '10% 할인쿠폰', rank: 'good' },
+      { code: '30% 할인쿠폰', rank: 'best' },
+    ]
+  }
+}
+
+function main() {
+  const coupons =  new FetchCoupons().fetch();
+  const subscribers = new FetchSubscriber().fetch();
+
+  console.log(coupons)
+  console.log(subscribers)
+}
+
+main();
