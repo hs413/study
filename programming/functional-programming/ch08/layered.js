@@ -50,11 +50,29 @@ function indexOfItem(cart, name) {
 }
 
 function setPriceByName(cart, name, price) {
-  let cartCopy = cart.slice();
+  const i = indexOfItem(cart, name);
 
-  const i = indexOfItem(cartCopy, name);
-  if (i !== null) cartCopy[i] = setPrice(cartCopy[i], price);
+  if (i !== null) {
+    return arraySet(cart, i, setPrice(cart[i], price))
+  }
 
+  return cart
+}
 
-  return cartCopy
+function arraySet(array, idx, value) {
+  const copy = array.slice();
+
+  copy[idx] = value;
+
+  return copy;
+}
+
+function setPrice(item, newPrice) {
+  return objectSet(item, "price", newPrice);
+}
+
+function objectSet(object, key, value) {
+  let copy = Object.assign({}, object);
+  copy[key] = value;
+  return copy;
 }
