@@ -30,36 +30,6 @@ function freeTieClip(cart) {
   return cart;
 }
 
-function isInCart(cart, name) {
-  return indexOfItem(cart, name) !== null;
-}
-
-function removeItemByName(cart, name) {
-  var idx = indexOfItem(cart, name)
-
-  if (idx !== null) return removeItem(cart, idx, 1)
-
-  return cart
-}
-
-function indexOfItem(cart, name) {
-  for (var i = 0; i < cart.length; i++) {
-    if (arrayGet(cart, i).name === name) return i
-  }
-  return null
-}
-
-function setPriceByName(cart, name, price) {
-  const i = indexOfItem(cart, name);
-
-  if (i !== null) {
-    const item = arrayGet(cart, i);
-    return arraySet(cart, i, setPrice(item, price))
-  }
-
-  return cart
-}
-
 function arraySet(array, idx, value) {
   const copy = array.slice();
 
@@ -81,3 +51,75 @@ function objectSet(object, key, value) {
 function arrayGet(array, idx) {
   return array[idx];
 }
+
+function makeItem(name, price) {
+  return objectSet({}, "name", name, "price", price);
+}
+
+// 배열을 객체로 만들기
+function add_item(cart, item) {
+  // return add_element_last(cart, item);
+  return objectSet(cart, item.name);
+}
+
+function calc_total(cart) {
+  // let total = 0;
+  // for (let i = 0; i < cart.length; i++) {
+  //   var item = cart[i];
+  //   total += item.price;
+  // }
+  // return total
+
+  let total = 0;
+  let names = Object.keys(cart);
+
+  for (let i = 0; i < names.length; i++) {
+    let item = cart[names[i]];
+      total += item.price;
+  }
+
+  return total;
+}
+
+function setPriceByName(cart, name, price) {
+  // const i = indexOfItem(cart, name);
+  //
+  // if (i !== null) {
+  //   const item = arrayGet(cart, i);
+  //   return arraySet(cart, i, setPrice(item, price))
+  // }
+  //
+  // return cart
+
+  if(isInCart(cart, name)) {
+    const item = cart[name];
+    const copy = setPrice(item, price);
+    return objectSet(cart, name, copy);
+  } else {
+    const item = makeItem(name, price);
+    return objectSet(cart, name, item);
+  }
+
+}
+
+function removeItemByName(cart, name) {
+  // var idx = indexOfItem(cart, name)
+  //
+  // if (idx !== null) return removeItem(cart, idx, 1)
+  //
+  // return cart
+
+  return objectDelete(cart, name);
+}
+
+function isInCart(cart, name) {
+  // return indexOfItem(cart, name) !== null;
+  return cart.hasOwnProperty(name);
+}
+
+// function indexOfItem(cart, name) {
+//   for (var i = 0; i < cart.length; i++) {
+//     if (arrayGet(cart, i).name === name) return i
+//   }
+//   return null
+// }
