@@ -31,8 +31,30 @@ function freeTieClip(cart) {
 }
 
 function isInCart(cart, name) {
+  return indexOfItem(cart, name) !== null;
+}
+
+function removeItemByName(cart, name) {
+  var idx = indexOfItem(cart, name)
+
+  if (idx !== null) return removeItem(cart, idx, 1)
+
+  return cart
+}
+
+function indexOfItem(cart, name) {
   for (var i = 0; i < cart.length; i++) {
-    if (cart[i].name === name) return true;
+    if (cart[i].name === name) return i
   }
-  return false;
+  return null
+}
+
+function setPriceByName(cart, name, price) {
+  let cartCopy = cart.slice();
+
+  const i = indexOfItem(cartCopy, name);
+  if (i !== null) cartCopy[i] = setPrice(cartCopy[i], price);
+
+
+  return cartCopy
 }
