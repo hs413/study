@@ -44,7 +44,7 @@ function removeItemByName(cart, name) {
 
 function indexOfItem(cart, name) {
   for (var i = 0; i < cart.length; i++) {
-    if (cart[i].name === name) return i
+    if (arrayGet(cart, i).name === name) return i
   }
   return null
 }
@@ -53,7 +53,8 @@ function setPriceByName(cart, name, price) {
   const i = indexOfItem(cart, name);
 
   if (i !== null) {
-    return arraySet(cart, i, setPrice(cart[i], price))
+    const item = arrayGet(cart, i);
+    return arraySet(cart, i, setPrice(item, price))
   }
 
   return cart
@@ -75,4 +76,8 @@ function objectSet(object, key, value) {
   let copy = Object.assign({}, object);
   copy[key] = value;
   return copy;
+}
+
+function arrayGet(array, idx) {
+  return array[idx];
 }
