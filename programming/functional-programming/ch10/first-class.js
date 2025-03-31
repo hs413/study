@@ -31,3 +31,21 @@ function setTaxByName(cart, name, tax) {
   const newChart = objectSet(cart, name, newItem);
   return newChart
 }
+
+cart = setPriceByName(cart, 'shoe', 13);
+cart = setQuantityByName(cart, 'shoe', 3);
+cart = setShippingByName(cart, 'shoe', 0);
+cart = setTaxByName(cart, 'shoe', 2.34);
+
+function setFieldByName(cart, name, field, value) {
+  const item = cart(name);
+  const newItem = objectSet(item, field, value);
+  const newChart = objectSet(cart, name, newItem);
+  return newChart
+}
+
+cart = setFieldByName(cart, 'shoe', 'price',13);
+cart = setFieldByName(cart, 'shoe', 'quantity',3);
+cart = setFieldByName(cart, 'shoe', 'shipping',0);
+cart = setFieldByName(cart, 'shoe', 'tax',2.34);
+
