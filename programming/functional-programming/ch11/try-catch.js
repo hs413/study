@@ -1,73 +1,50 @@
-
-
 function saveUserData(user) {
-  console.log('...user')
+  console.log('save: ', user)
 }
 
 function fetchProduct(productId) {
-  console.log('...product')
+  console.log('fetch: ', productId)
 }
 
-  try {
-    saveUserData()
-  } catch (error) {
-    logToSnapErrors(error)
-  }
-
-// 콜백 함수 빼내기
-function withLogging(f) {
-  try {
-    f()
-  } catch (error) {
-    logToSnapErrors(error)
-  }
+function logToSnapErrors(error) {
+  console.log('log: ', error)
 }
-
-  withLogging(function () {
-    saveUserData(user);
-  })
-
-// 이름을 명확하게 바꾸기
 
 try {
-  saveUserDataNoLogging(user);
-} catch(error) {
+  saveUserData(user)
+} catch (error) {
   logToSnapErrors(error)
 }
 
-try {
-  fetchProductNoLogging(productId)
-} catch(error) {
-  logToSnapErrors(error);
-}
-
-function saveUserDataWithLogging(user) {
+// 고차함수
+function withLogging(callback) {
   try {
-    saveUserDataNoLogging(user);
-  } catch(error) {
+    callback()
+  } catch (error) {
     logToSnapErrors(error)
   }
 }
 
-function fetchProductWithLogging(productId) {
-  try {
-    fetchProductNoLogging(productId)
-  } catch(error) {
-    logToSnapErrors(error);
-  }
-}
+withLogging(function () {
+  saveUserData(user);
+})
 
-// 중복 없애기
-function warpLogging(f) {
+// 함수를 반환하는 함수
+function warpLogging(callback) {
   return function(arg) {
     try {
-      f(arg)
+      callback(arg)
     } catch (error){
       logToSnapErrors(error);
     }
   }
 }
 
-const saveUserDataWithLogging = warpLogging(saveUserDataNoLogging);
-const fetchProductWithLogging = warpLogging(fetchProductNoLogging);
+const user = {name: 'a'}
 
+const saveUserDataWithLogging = warpLogging(saveUserData);
+const fetchProductWithLogging = warpLogging(fetchProduct);
+
+saveUserDataWithLogging(user);
+fetchProductWithLogging(user);
+warpLogging(saveUserData)(user);
